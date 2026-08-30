@@ -10,6 +10,9 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
 
+logging:
+  org.springframework.security: TRACE
+
 spring:
   application:
     name: api-gateway
@@ -28,3 +31,19 @@ spring:
                 - Path=api/files/**
               filters:
                 - StripPrefix=1
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH2_RESOURCE_SERVER}
+      client:
+        provider:
+          keycloak:
+            issuer-uri: ${OAUTH2_RESOURCE_SERVER}
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            scope: openid
